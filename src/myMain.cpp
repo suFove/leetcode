@@ -2,8 +2,9 @@
 
 using namespace std;
 
-int main() {
-    
+int main()
+{
+
     // test4List();
     // test4MyHashSet();
     // test4StringSolution();
@@ -25,7 +26,9 @@ int main() {
 
     // test4isSymmetric();
     // test4diameterOfBinaryTree();
-    test4levelOrder();
+    // test4levelOrder();
+    // test4sortedArrayToBST();
+    test4searchInsert();
 
     // myTest();
     return 0;
