@@ -38,7 +38,7 @@ Each solution is written within a class named after the problem, e.g., `Solution
 ## Usage
 
 1. Clone this repository:
-   git clone https://github.com/suFove/leetcode-solutions-cpp.git
+   git clone [https://github.com/suFove/leetcode-solutions-cpp.git](https://github.com/suFove/leetcode.git)
 
 2. Navigate to the desired problem directory, e.g., `src`.
 
