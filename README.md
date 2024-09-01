@@ -53,7 +53,7 @@ This is a personal practice repository, so I won't be accepting external contrib
 
 ## Contact
 
-For any questions or inquiries, please contact me at [your.email@example.com](mailto:164206055@qq.com).
+For any questions or inquiries, please contact me at [164206055@qq.com](mailto:164206055@qq.com).
 
 ## License
 
