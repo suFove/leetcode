@@ -1,4 +1,3 @@
-
 #include "../include/myHeader.hpp"
 
 using namespace std;
@@ -1177,11 +1176,15 @@ bool Solution::isValid(std::string s)
 
     for (int i = 0; i < s.size(); i++)
     {
-        //如果当前是左，则入栈，如果是右则与栈顶元素比较
-        if(ch_l.count(s[i])){
+        // 如果当前是左，则入栈，如果是右则与栈顶元素比较
+        if (ch_l.count(s[i]))
+        {
             buff.push(s[i]);
-        }else{//当前为右
-            if(buff.size() == 0){
+        }
+        else
+        { // 当前为右
+            if (buff.size() == 0)
+            {
                 return false;
             }
             if (ch_l[buff.top()] != ch_r[s[i]])
@@ -1189,7 +1192,7 @@ bool Solution::isValid(std::string s)
                 return false;
             }
             buff.pop();
-        }  
+        }
     }
     return buff.size() == 0 ? true : false;
 }
@@ -1200,6 +1203,104 @@ void test4isValid()
     Solution ss;
     bool res = ss.isValid(case1);
     cout << (res == 0 ? "false" : "true") << endl;
+}
+
+// 121.股票最大
+int Solution::maxProfit(std::vector<int> &prices)
+{
+    // 记录历史最低
+    int min_price = INT32_MAX;
+    int max_profit = 0;
+    for (auto price : prices)
+    {
+        max_profit = max(max_profit, price - min_price);
+        min_price = min(min_price, price);
+    }
+    return max_profit;
+}
+
+void test4maxProfit()
+{
+    vector<int> prices = {3, 2, 6, 5, 0, 3};
+
+    Solution ss;
+    int res = ss.maxProfit(prices);
+    cout << res << endl;
+}
+
+// 70.爬楼梯
+int Solution::climbStairs(int n)
+{
+    // 递归
+    function<int(int)> climb = [&](int m) -> int
+    {
+        if (m == 1)
+        {
+            return 1;
+        }
+        if (m == 2)
+        {
+            return 2;
+        }
+        return climb(m - 1) + climb(m - 2);
+    };
+
+    return climb(n);
+}
+
+int Solution::climbStairs_1(int n)
+{
+    vector<int> memo(n + 1);
+    // 记忆递归，避免重复计算
+    function< int (int, vector<int> &) > climb = [&](int m, vector<int> &memo) -> int
+    {
+        if (memo[m] > 0)
+        {
+            return memo[m];
+        }
+        if (m == 1)
+        {
+            memo[m] = 1;
+        }
+        else if (m == 2)
+        {
+            memo[m] = 2;
+        }
+        else
+        {
+            memo[m] = climb(m - 1, memo) + climb(m - 2, memo);
+        }
+        return memo[m];
+    };
+    
+    return climb(n, memo);
+}
+
+int Solution::climbStairs_2(int n)
+{
+    //dp
+    if(n <= 2){
+        return n;
+    }
+    vector<int> dp(n);
+    dp[0] = 1;
+    dp[1] = 2;
+    for(int i = 2; i < n; ++i){
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    return dp.back();
+}
+void test4climbStairs()
+{
+    int n = 6;
+    Solution ss;
+    int res0 = ss.climbStairs(n);
+    int res1 = ss.climbStairs_1(n);
+    int res2 = ss.climbStairs_2(n);
+
+    cout << res0 << endl;
+    cout << res1 << endl;
+    cout << res2 << endl;
 }
 
 //================END===================//

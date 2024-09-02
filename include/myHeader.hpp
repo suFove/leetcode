@@ -90,11 +90,17 @@ public:
     // 108.有序数组转为二叉搜索树
     TreeNode *sortedArrayToBST(std::vector<int> &nums);
     TreeNode *sortedArrayToBST_1(std::vector<int> &nums);
-    //35.
-    int searchInsert(std::vector<int>& nums, int target);
-    int searchInsert_1(std::vector<int>& nums, int target);
-    //20.有效括号
+    // 35.
+    int searchInsert(std::vector<int> &nums, int target);
+    int searchInsert_1(std::vector<int> &nums, int target);
+    // 20.有效括号
     bool isValid(std::string s);
+    // 121.最大利润
+    int maxProfit(std::vector<int> &prices);
+    //70.爬楼梯
+    int climbStairs(int n);
+    int climbStairs_1(int n);
+    int climbStairs_2(int n);
 };
 
 // 1.
@@ -134,10 +140,20 @@ void test4diameterOfBinaryTree();
 void test4levelOrder();
 // 108.
 void test4sortedArrayToBST();
-//35.
+// 35.
 void test4searchInsert();
-//20.检查配对括号，循序
+// 20.检查配对括号，循序
 void test4isValid();
+// 121.
+void test4maxProfit();
+//70.
+void test4climbStairs();
+
+
+
+
+
+
 
 
 

@@ -29,7 +29,9 @@ int main()
     // test4levelOrder();
     // test4sortedArrayToBST();
     // test4searchInsert();
-    test4isValid();
+    // test4isValid();
+    // test4maxProfit();
+    test4climbStairs();
 
     // myTest();
     return 0;
