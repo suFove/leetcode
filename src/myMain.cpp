@@ -28,7 +28,8 @@ int main()
     // test4diameterOfBinaryTree();
     // test4levelOrder();
     // test4sortedArrayToBST();
-    test4searchInsert();
+    // test4searchInsert();
+    test4isValid();
 
     // myTest();
     return 0;

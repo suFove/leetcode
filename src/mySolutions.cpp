@@ -1,7 +1,6 @@
 
 #include "../include/myHeader.hpp"
 
-
 using namespace std;
 
 // 1.两数之和
@@ -1090,7 +1089,6 @@ TreeNode *Solution::sortedArrayToBST_1(vector<int> &nums)
     return recur(nums, 0, nums.size() - 1);
 }
 
-
 void test4sortedArrayToBST()
 {
     vector<int> Arrs = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -1100,43 +1098,51 @@ void test4sortedArrayToBST()
     ss.printTree(res);
 }
 
-
-//35.找到返回下标，否则插入
+// 35.找到返回下标，否则插入
 int Solution::searchInsert(vector<int> &nums, int target)
 {
-    if(nums.size() <= 0){
+    if (nums.size() <= 0)
+    {
         return nums.size();
     }
     int less_mark = nums.size();
-    for(int i = 0; i < nums.size(); ++i){
-        if(target == nums[i]){
+    for (int i = 0; i < nums.size(); ++i)
+    {
+        if (target == nums[i])
+        {
             return i;
         }
-        //第一个比target大的，break
-        if(target < nums[i]){
+        // 第一个比target大的，break
+        if (target < nums[i])
+        {
             less_mark = i;
             break;
         }
     }
-    if(less_mark < nums.size()){
+    if (less_mark < nums.size())
+    {
         return less_mark;
     }
     return nums.size();
-    
 }
 
-//35.使用二分查找
-int Solution::searchInsert_1(vector<int> &nums, int target){
+// 35.使用二分查找
+int Solution::searchInsert_1(vector<int> &nums, int target)
+{
     int l = 0;
-    int r = nums.size()-1;
+    int r = nums.size() - 1;
     int ans = nums.size();
-    while(l <= r){
-        int mid = ((r-l) >> 1) + l;
-        if(target <= nums[mid]){
+    while (l <= r)
+    {
+        int mid = ((r - l) >> 1) + l;
+        if (target <= nums[mid])
+        {
             ans = mid;
-            r = mid-1;
-        }else{
-            l = mid+1;
+            r = mid - 1;
+        }
+        else
+        {
+            l = mid + 1;
         }
     }
     return ans;
@@ -1144,12 +1150,60 @@ int Solution::searchInsert_1(vector<int> &nums, int target){
 
 void test4searchInsert()
 {
-    vector<int> nums = {2,4,5,9,10};
+    vector<int> nums = {2, 4, 5, 9, 10};
     Solution ss;
     int res = ss.searchInsert_1(nums, 41);
     cout << res << endl;
 }
+
+bool Solution::isValid(std::string s)
+{
+    if (s.empty() || s.size() <= 1)
+    {
+        return false;
+    }
+    // vector<char> schemes =  {'(', ')', '{', '}', '[', ']'};
+    unordered_map<char, int> ch_l = {
+        {'(', 0},
+        {'{', 1},
+        {'[', 2},
+
+    };
+    unordered_map<char, int> ch_r = {
+        {')', 0},
+        {'}', 1},
+        {']', 2}};
+    stack<char> buff;
+
+    for (int i = 0; i < s.size(); i++)
+    {
+        //如果当前是左，则入栈，如果是右则与栈顶元素比较
+        if(ch_l.count(s[i])){
+            buff.push(s[i]);
+        }else{//当前为右
+            if(buff.size() == 0){
+                return false;
+            }
+            if (ch_l[buff.top()] != ch_r[s[i]])
+            {
+                return false;
+            }
+            buff.pop();
+        }  
+    }
+    return buff.size() == 0 ? true : false;
+}
+
+void test4isValid()
+{
+    string case1 = "[({(())}[()])]";
+    Solution ss;
+    bool res = ss.isValid(case1);
+    cout << (res == 0 ? "false" : "true") << endl;
+}
+
 //================END===================//
+
 void myTest()
 {
     int a = 1;

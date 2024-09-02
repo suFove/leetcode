@@ -136,8 +136,8 @@ void test4levelOrder();
 void test4sortedArrayToBST();
 //35.
 void test4searchInsert();
-//20.
-
+//20.检查配对括号，循序
+void test4isValid();
 
 
 
