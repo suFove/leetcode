@@ -31,7 +31,9 @@ int main()
     // test4searchInsert();
     // test4isValid();
     // test4maxProfit();
-    test4climbStairs();
+    // test4climbStairs();
+    // test4generate();
+    test4groupAnagrams();
 
     // myTest();
     return 0;

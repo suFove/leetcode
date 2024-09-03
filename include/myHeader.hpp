@@ -35,12 +35,19 @@ class Solution
 private:
     /* data */
 public:
+    // utills function
+    void printList(ListNode *head);
+    void printVector(const std::vector<int>& vec);
+    void printVector2D(std::vector<std::vector<int>>&);
+    void printVectoString(const std::vector<std::string>& vec);
+    void printVector2D(std::vector<std::vector<std::string>>&);
+
     // 1.
     std::vector<int> twoSum1(std::vector<int> &, int);
     std::vector<int> twoSum2(std::vector<int> &, int);
     //
     ListNode *addTwoNumbers(ListNode *, ListNode *);
-    void printList(ListNode *);
+    
     //
     double findMedianSortedArrays(std::vector<int> &, std::vector<int> &);
     double findMedianSortedArrays_2(std::vector<int> &, std::vector<int> &);
@@ -101,6 +108,12 @@ public:
     int climbStairs(int n);
     int climbStairs_1(int n);
     int climbStairs_2(int n);
+    //118.杨辉三角
+    std::vector<std::vector<int>> generate(int numRows);
+    //==========mid==========//
+    //49.字母异位词 组合
+    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs);
+        
 };
 
 // 1.
@@ -148,7 +161,11 @@ void test4isValid();
 void test4maxProfit();
 //70.
 void test4climbStairs();
-
+//118.
+void test4generate();
+//=============mid============//
+//49.
+void test4groupAnagrams();
 
 
 

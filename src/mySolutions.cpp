@@ -2,6 +2,59 @@
 
 using namespace std;
 
+// utills function
+
+void Solution::printList(ListNode *head)
+{
+    while (head)
+    {
+        cout << head->val << " -> ";
+        head = head->next;
+    }
+    cout << "nullptr" << endl;
+}
+
+void Solution::printVector(const vector<int> &vec)
+{
+    cout << " [ ";
+    for (int i = 0; i < vec.size(); i++)
+    {
+        cout << vec[i] << " ";
+    }
+    cout << "]" << endl;
+}
+
+void Solution::printVector2D(vector<vector<int>> &res)
+{
+    cout << "[" << endl;
+    for (const auto &r : res)
+    {
+        printVector(r);
+    }
+    cout << "]" << endl;
+}
+
+void Solution::printVectoString(const vector<std::string> &vec)
+{
+    cout << " [ ";
+    for (const auto &s : vec)
+    {
+        cout << "\"" << s << "\"" << " ";
+    }
+    cout << "]" << endl;
+}
+
+void Solution::printVector2D(vector<vector<string>> &res)
+{
+    cout << "[" << endl;
+    for (const auto &r : res)
+    {
+        printVectoString(r);
+    }
+    cout << "]" << endl;
+}
+
+//======= easy =========//
 // 1.两数之和
 vector<int> Solution::twoSum1(vector<int> &nums, int target)
 {
@@ -79,16 +132,6 @@ ListNode *Solution::addTwoNumbers(ListNode *l1, ListNode *l2)
     }
 
     return dummy->next;
-}
-
-void printList(ListNode *head)
-{
-    while (head)
-    {
-        cout << head->val << " -> ";
-        head = head->next;
-    }
-    cout << "nullptr" << endl;
 }
 
 // 4.寻找两个正序数组的中位数
@@ -415,12 +458,12 @@ void test4reverseList()
     ListNode *IntersectionNode = new ListNode(4, new ListNode(3));
     ListNode *headA = new ListNode(2, IntersectionNode);
     cout << "original list:";
-    printList(headA);
+    ss.printList(headA);
     cout << endl;
     ListNode *res = ss.reverseList_2(headA);
 
     cout << "reversed list:";
-    printList(res);
+    ss.printList(res);
     cout << endl;
 }
 
@@ -530,8 +573,9 @@ void test4isPalindrome()
 {
     // ListNode *headA = new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(1))));
     ListNode *headA = new ListNode(2, new ListNode(3, new ListNode(2)));
-    printList(headA);
     Solution ss;
+    ss.printList(headA);
+
     cout << ss.isPalindrome_2(headA) << endl;
 }
 
@@ -580,13 +624,14 @@ ListNode *Solution::mergeTwoLists_1(ListNode *list1, ListNode *list2)
 
 void test4mergeTwoLists()
 {
+    Solution ss;
     ListNode *headA = new ListNode(1, new ListNode(3, new ListNode(5, new ListNode(6))));
     ListNode *headB = new ListNode(2, new ListNode(5, new ListNode(7)));
-    printList(headA);
-    printList(headB);
-    Solution ss;
+    ss.printList(headA);
+    ss.printList(headB);
+
     ListNode *res = ss.mergeTwoLists_1(headA, headB);
-    printList(res);
+    ss.printList(res);
 }
 
 // 300.最长递增子序列长度
@@ -1030,13 +1075,12 @@ void test4levelOrder()
     Solution ss;
     res = ss.levelOrder(root);
     ss.printTree(root);
-    cout << "[ ";
-    for (auto v : res)
+    for (auto r : res)
     {
         cout << "[ ";
-        for (auto x : v)
+        for (auto l : r)
         {
-            cout << x << ' ';
+            cout << l << ' ';
         }
         cout << " ] ";
     }
@@ -1252,7 +1296,7 @@ int Solution::climbStairs_1(int n)
 {
     vector<int> memo(n + 1);
     // 记忆递归，避免重复计算
-    function< int (int, vector<int> &) > climb = [&](int m, vector<int> &memo) -> int
+    function<int(int, vector<int> &)> climb = [&](int m, vector<int> &memo) -> int
     {
         if (memo[m] > 0)
         {
@@ -1272,24 +1316,27 @@ int Solution::climbStairs_1(int n)
         }
         return memo[m];
     };
-    
+
     return climb(n, memo);
 }
 
 int Solution::climbStairs_2(int n)
 {
-    //dp
-    if(n <= 2){
+    // dp
+    if (n <= 2)
+    {
         return n;
     }
     vector<int> dp(n);
     dp[0] = 1;
     dp[1] = 2;
-    for(int i = 2; i < n; ++i){
-        dp[i] = dp[i-1] + dp[i-2];
+    for (int i = 2; i < n; ++i)
+    {
+        dp[i] = dp[i - 1] + dp[i - 2];
     }
     return dp.back();
 }
+
 void test4climbStairs()
 {
     int n = 6;
@@ -1303,14 +1350,94 @@ void test4climbStairs()
     cout << res2 << endl;
 }
 
+vector<vector<int>> Solution::generate(int numRows)
+{
+    // 初始值
+    vector<vector<int>> triangle(numRows);
+    if (numRows == 1)
+    {
+        triangle[0] = {1};
+        return triangle;
+    }
+    if (numRows == 2)
+    {
+        triangle[1] = {1, 2};
+        return triangle;
+    }
+    // 大于3// 从第3行开始，【0，【do this】，numsRows-1】
+    triangle[0] = vector<int>(1, 1);
+    triangle[1] = vector<int>(2, 1);
+
+    for (int row = 2; row < numRows; row++)
+    {
+        vector<int> rowVec(row + 1); // 申请3个空间
+        rowVec[0] = 1;
+        rowVec[row] = 1;
+        for (int col = 1; col < row; col++)
+        { // 对中间操作[0,1,2]
+            rowVec[col] = triangle[row - 1][col - 1] + triangle[row - 1][col];
+        }
+        triangle[row] = rowVec;
+    }
+    return triangle;
+}
+
+void test4generate()
+{
+    int numRows = 15;
+    Solution ss;
+    vector<vector<int>> res = ss.generate(numRows);
+
+    ss.printVector2D(res);
+}
+
+vector<vector<string>> Solution::groupAnagrams(vector<string> &strs)
+{
+    vector<vector<string>> ans;
+    if (strs.empty())
+    {
+        ans.push_back({""});
+        return ans;
+    }
+
+    unordered_map<string, vector<string>> strs_hash_map;
+
+    for (auto &s : strs)
+    { // 不要改变原数据
+        string ss = s;
+        sort(ss.begin(), ss.end());        // key
+        strs_hash_map[ss].emplace_back(s); // 利用emplce,优化1次查找机会
+    }
+    for (auto it = strs_hash_map.begin(); it != strs_hash_map.end(); it++)
+    {
+        ans.emplace_back(it->second);
+    }
+
+    return ans;
+}
+
+void test4groupAnagrams()
+{
+    vector<string> strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+    Solution ss;
+    vector<vector<string>> res = ss.groupAnagrams(strs);
+    ss.printVector2D(res);
+}
+
 //================END===================//
 
 void myTest()
 {
-    int a = 1;
-    int *pa = &a;
-    cout << *pa << endl;
-    int *pb, *pc = pa;
-    cout << *pb << endl;
-    cout << *pc << endl;
+    // int a = 1;
+    // int *pa = &a;
+    // cout << *pa << endl;
+    // int *pb, *pc = pa;
+    // cout << *pb << endl;
+    // cout << *pc << endl;
+
+    string ss = "hello";
+    string cc = ss;
+    sort(ss.begin(), ss.end());
+    cout << ss << endl;
+    cout << cc << endl;
 }
