@@ -33,7 +33,8 @@ int main()
     // test4maxProfit();
     // test4climbStairs();
     // test4generate();
-    test4groupAnagrams();
+    // test4groupAnagrams();
+    test4longestConsecutive();
 
     // myTest();
     return 0;

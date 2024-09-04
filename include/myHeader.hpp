@@ -113,7 +113,9 @@ public:
     //==========mid==========//
     //49.字母异位词 组合
     std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs);
-        
+    //128.最长连续序列长度
+    int longestConsecutive(std::vector<int>& nums);
+
 };
 
 // 1.
@@ -166,6 +168,7 @@ void test4generate();
 //=============mid============//
 //49.
 void test4groupAnagrams();
+void test4longestConsecutive();
 
 
 

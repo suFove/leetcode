@@ -1424,6 +1424,42 @@ void test4groupAnagrams()
     ss.printVector2D(res);
 }
 
+// 128.最长连续序列长度
+int Solution::longestConsecutive(std::vector<int> &nums)
+{
+    if (nums.size() <= 1)
+    {
+        return nums.size();
+    }
+    int res = 0;
+    // 去重
+    unordered_set<int> seq;
+    for (auto num : nums)
+    {
+        seq.insert(num);
+    }
+    // 找最长，if nums[i] - 1 存在，则留下该点，否则记录长度为1
+    for (auto it = seq.begin(); it != seq.end(); it++)
+    {
+        if (seq.find((*it) - 1) == seq.end())
+        { // not found
+            // 当前为开头，寻找后面的
+            int tmp_long = 1;
+            for (auto after_it = (*it) + 1; seq.find(after_it) != seq.end(); after_it++, tmp_long++){}
+            res = max(res, tmp_long); // 记录最长
+        }
+    }
+    return res;
+}
+
+void test4longestConsecutive()
+{
+    vector<int> nums = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
+    Solution ss;
+    int res = ss.longestConsecutive(nums);
+    cout << res << endl;
+}
+
 //================END===================//
 
 void myTest()
