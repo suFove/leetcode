@@ -1438,7 +1438,7 @@ int Solution::longestConsecutive(std::vector<int> &nums)
     {
         seq.insert(num);
     }
-    // 找最长，if nums[i] - 1 存在，则留下该点，否则记录长度为1
+    // 找最长，if nums[i] - 1 存在，则留下该点，否则跳过
     for (auto it = seq.begin(); it != seq.end(); it++)
     {
         if (seq.find((*it) - 1) == seq.end())
