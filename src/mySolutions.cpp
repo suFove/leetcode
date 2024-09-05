@@ -1445,7 +1445,9 @@ int Solution::longestConsecutive(std::vector<int> &nums)
         { // not found
             // 当前为开头，寻找后面的
             int tmp_long = 1;
-            for (auto after_it = (*it) + 1; seq.find(after_it) != seq.end(); after_it++, tmp_long++){}
+            for (auto after_it = (*it) + 1; seq.find(after_it) != seq.end(); after_it++, tmp_long++)
+            {
+            }
             res = max(res, tmp_long); // 记录最长
         }
     }
@@ -1458,6 +1460,89 @@ void test4longestConsecutive()
     Solution ss;
     int res = ss.longestConsecutive(nums);
     cout << res << endl;
+}
+
+// 11.盛水最多的容器
+int Solution::maxArea(std::vector<int> &height)
+{
+    if (height.size() < 2)
+        return 0;
+
+    // main idea: max(2边x长), 使用双指针；
+    int l = 0;
+    int r = height.size() - 1;
+    int res = 0;
+    // 左右同时，寻找比当前值更高的，
+    while (l < r)
+    {
+        // 记录最大
+        res = max(res, (r - l) * min(height[l], height[r])); // 容量
+        // 移动
+        if (height[l] < height[r])
+            l++;
+        else
+            r--;
+    }
+
+    return res;
+}
+
+void test4maxArea()
+{
+    vector<int> height = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+    Solution ss;
+    int res = ss.maxArea(height);
+    cout << res << endl;
+}
+
+vector<vector<int>> Solution::threeSum(vector<int> &nums)
+{
+    sort(nums.begin(), nums.end()); // 先排序，去重
+    vector<vector<int>> ans;
+
+    for (int i = 0; i < nums.size(); i++)
+    {
+        int j = i + 1, k = nums.size() - 1;
+
+        while (j < k)
+        {
+            int sum = nums[i] + nums[j] + nums[k];
+
+            if (sum == 0)
+            {
+                ans.push_back({nums[i], nums[j], nums[k]});
+                j++;
+                k--;
+
+                // skip j and k
+                while (j < k && nums[j] == nums[j - 1])
+                    j++;
+                while (j < k && nums[k] == nums[k + 1])
+                    k--;
+            }
+            else if (sum < 0)
+            {
+                j++;
+            }
+            else
+            {
+                k--;
+            }
+        }
+
+        // Skip i
+        while (i + 1 < nums.size() && nums[i] == nums[i + 1])
+            i++;
+    }
+
+    return ans;
+}
+void test4threeSum()
+{
+    vector<int> nums = {-1, 0, 1, 2, -1, -4};
+    Solution ss;
+    vector<vector<int>> res = ss.threeSum(nums);
+    ss.printVector2D(res);
 }
 
 //================END===================//

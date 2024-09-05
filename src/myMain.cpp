@@ -34,7 +34,9 @@ int main()
     // test4climbStairs();
     // test4generate();
     // test4groupAnagrams();
-    test4longestConsecutive();
+    // test4longestConsecutive();
+    // test4maxArea();
+    test4threeSum();
 
     // myTest();
     return 0;

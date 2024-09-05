@@ -30,24 +30,40 @@ struct TreeNode
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+/// @brief solve vector can't be the element of hash
+struct VectorHash
+{
+    size_t operator()(const std::vector<int> &v) const
+    {
+        std::hash<int> hasher;
+        size_t seed = 0;
+        for (int i : v)
+        {
+            seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
+
 class Solution
 {
 private:
-    /* data */
+    /* hash vector */
+
 public:
     // utills function
     void printList(ListNode *head);
-    void printVector(const std::vector<int>& vec);
-    void printVector2D(std::vector<std::vector<int>>&);
-    void printVectoString(const std::vector<std::string>& vec);
-    void printVector2D(std::vector<std::vector<std::string>>&);
+    void printVector(const std::vector<int> &vec);
+    void printVector2D(std::vector<std::vector<int>> &);
+    void printVectoString(const std::vector<std::string> &vec);
+    void printVector2D(std::vector<std::vector<std::string>> &);
 
     // 1.
     std::vector<int> twoSum1(std::vector<int> &, int);
     std::vector<int> twoSum2(std::vector<int> &, int);
     //
     ListNode *addTwoNumbers(ListNode *, ListNode *);
-    
+
     //
     double findMedianSortedArrays(std::vector<int> &, std::vector<int> &);
     double findMedianSortedArrays_2(std::vector<int> &, std::vector<int> &);
@@ -104,18 +120,21 @@ public:
     bool isValid(std::string s);
     // 121.最大利润
     int maxProfit(std::vector<int> &prices);
-    //70.爬楼梯
+    // 70.爬楼梯
     int climbStairs(int n);
     int climbStairs_1(int n);
     int climbStairs_2(int n);
-    //118.杨辉三角
+    // 118.杨辉三角
     std::vector<std::vector<int>> generate(int numRows);
     //==========mid==========//
-    //49.字母异位词 组合
-    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs);
-    //128.最长连续序列长度
-    int longestConsecutive(std::vector<int>& nums);
-
+    // 49.字母异位词 组合
+    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string> &strs);
+    // 128.最长连续序列长度
+    int longestConsecutive(std::vector<int> &nums);
+    // 11.盛水最多
+    int maxArea(std::vector<int> &height);
+    // 15.三数之和为0的三元组
+    std::vector<std::vector<int>> threeSum(std::vector<int> &nums);
 };
 
 // 1.
@@ -161,22 +180,17 @@ void test4searchInsert();
 void test4isValid();
 // 121.
 void test4maxProfit();
-//70.
+// 70.
 void test4climbStairs();
-//118.
+// 118.
 void test4generate();
 //=============mid============//
-//49.
+// 49.
 void test4groupAnagrams();
 void test4longestConsecutive();
-
-
-
-
-
-
-
-
+void test4maxArea();
+// 15.
+void test4threeSum();
 
 //=== My Test====
 void myTest();
