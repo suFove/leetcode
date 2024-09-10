@@ -1537,6 +1537,7 @@ vector<vector<int>> Solution::threeSum(vector<int> &nums)
 
     return ans;
 }
+
 void test4threeSum()
 {
     vector<int> nums = {-1, 0, 1, 2, -1, -4};
@@ -1544,6 +1545,92 @@ void test4threeSum()
     vector<vector<int>> res = ss.threeSum(nums);
     ss.printVector2D(res);
 }
+
+
+// 42.接雨水，求最大雨水
+int Solution::trap(vector<int> &height)
+{
+    if (height.size() <= 2)
+        return 0;
+    int ans = 0;
+    // 两端比中间高，
+    // 初始化2个数组，保存从左（右）映射的最大值
+    vector<int> leftMax(height.size()), rightMax(height.size());
+    // 从左向右
+    leftMax[0] = height[0];
+    for (int i = 1; i < height.size(); i++)
+    {
+        leftMax[i] = max(leftMax[i - 1], height[i]);
+    }
+    // 从右向左
+    rightMax[height.size() - 1] = height[height.size() - 1];
+    for (int i = height.size() - 2; i >= 0; i--)
+    {
+        rightMax[i] = max(rightMax[i + 1], height[i]);
+    }
+
+    // 取这两个数组最小的元素
+    for (int i = 0; i < height.size(); i++)
+    {
+        ans += min(leftMax[i], rightMax[i]) - height[i];
+    }
+    return ans;
+}
+
+int Solution::trap_1(vector<int> &height){
+    if (height.size() <= 2)
+        return 0;
+    int ans = 0;
+    //与上个方法相近，考虑是否可以优化空间
+    int l = 0;
+    int r = height.size()-1;
+    int leftMax = 0, rightMax = 0;
+    while(l < r){
+        leftMax = max(leftMax, height[l]);
+        rightMax = max(rightMax, height[r]);
+        //从左边计算接水
+        if(height[l] < height[r]){
+            ans += leftMax - height[l++];
+        }else{
+            ans += rightMax - height[r--];
+        }
+    }
+    return ans;
+}
+
+int Solution::trap_2(vector<int> &height){
+    if (height.size() <= 2)
+        return 0;
+    int ans = 0;
+    //维护一个stack, 其栈顶元素是一侧的最大值（左边柱子），
+    stack<int> buff_stcak;//装载下标
+    for(int i = 0; i < height.size(); i++){ 
+        while(!buff_stcak.empty() && height[buff_stcak.top()] < height[i]){//保持左低右高 or 左右相等
+            int top = buff_stcak.top();//坑底高度
+            buff_stcak.pop();//弹出坑底
+            if(buff_stcak.empty())
+                break;
+            //计算:下标差*高度
+            int left = buff_stcak.top();//左柱高度
+            int index_diff = i - left - 1;
+            int h = min(height[i], height[left]) - height[top];
+            ans += index_diff * h;
+            
+        }
+        buff_stcak.push(i);    
+    }
+    return ans;
+}
+
+void test4trap()
+{
+    vector<int> height = {4, 2, 0, 3, 2, 5};
+    Solution ss;
+    int res = ss.trap_2(height);
+    cout << res << endl;
+}
+
+
 
 //================END===================//
 

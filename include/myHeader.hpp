@@ -135,6 +135,12 @@ public:
     int maxArea(std::vector<int> &height);
     // 15.三数之和为0的三元组
     std::vector<std::vector<int>> threeSum(std::vector<int> &nums);
+
+    //==========hard==========//
+    //42.
+    int trap(std::vector<int>& height);
+    int trap_1(std::vector<int>& height);//双指针
+    int trap_2(std::vector<int>& height);//单调栈
 };
 
 // 1.
@@ -184,6 +190,8 @@ void test4maxProfit();
 void test4climbStairs();
 // 118.
 void test4generate();
+
+
 //=============mid============//
 // 49.
 void test4groupAnagrams();
@@ -191,6 +199,14 @@ void test4longestConsecutive();
 void test4maxArea();
 // 15.
 void test4threeSum();
+
+
+
+//=============hard============//
+
+void test4trap();
+
+
 
 //=== My Test====
 void myTest();

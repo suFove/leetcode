@@ -36,7 +36,8 @@ int main()
     // test4groupAnagrams();
     // test4longestConsecutive();
     // test4maxArea();
-    test4threeSum();
+    // test4threeSum();
+    test4trap();
 
     // myTest();
     return 0;
