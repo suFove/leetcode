@@ -135,6 +135,10 @@ public:
     int maxArea(std::vector<int> &height);
     // 15.三数之和为0的三元组
     std::vector<std::vector<int>> threeSum(std::vector<int> &nums);
+    //3.无重复字串长度
+    int lengthOfLongestSubstring(std::string s);
+
+
 
     //==========hard==========//
     //42.
@@ -199,7 +203,8 @@ void test4longestConsecutive();
 void test4maxArea();
 // 15.
 void test4threeSum();
-
+//1.
+void test4lengthOfLongestSubstring();
 
 
 //=============hard============//

@@ -37,7 +37,8 @@ int main()
     // test4longestConsecutive();
     // test4maxArea();
     // test4threeSum();
-    test4trap();
+    // test4trap();
+    test4lengthOfLongestSubstring();
 
     // myTest();
     return 0;

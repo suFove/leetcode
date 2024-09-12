@@ -1546,7 +1546,6 @@ void test4threeSum()
     ss.printVector2D(res);
 }
 
-
 // 42.接雨水，求最大雨水
 int Solution::trap(vector<int> &height)
 {
@@ -1577,47 +1576,54 @@ int Solution::trap(vector<int> &height)
     return ans;
 }
 
-int Solution::trap_1(vector<int> &height){
+int Solution::trap_1(vector<int> &height)
+{
     if (height.size() <= 2)
         return 0;
     int ans = 0;
-    //与上个方法相近，考虑是否可以优化空间
+    // 与上个方法相近，考虑是否可以优化空间
     int l = 0;
-    int r = height.size()-1;
+    int r = height.size() - 1;
     int leftMax = 0, rightMax = 0;
-    while(l < r){
+    while (l < r)
+    {
         leftMax = max(leftMax, height[l]);
         rightMax = max(rightMax, height[r]);
-        //从左边计算接水
-        if(height[l] < height[r]){
+        // 从左边计算接水
+        if (height[l] < height[r])
+        {
             ans += leftMax - height[l++];
-        }else{
+        }
+        else
+        {
             ans += rightMax - height[r--];
         }
     }
     return ans;
 }
 
-int Solution::trap_2(vector<int> &height){
+int Solution::trap_2(vector<int> &height)
+{
     if (height.size() <= 2)
         return 0;
     int ans = 0;
-    //维护一个stack, 其栈顶元素是一侧的最大值（左边柱子），
-    stack<int> buff_stcak;//装载下标
-    for(int i = 0; i < height.size(); i++){ 
-        while(!buff_stcak.empty() && height[buff_stcak.top()] < height[i]){//保持左低右高 or 左右相等
-            int top = buff_stcak.top();//坑底高度
-            buff_stcak.pop();//弹出坑底
-            if(buff_stcak.empty())
+    // 维护一个stack, 其栈顶元素是一侧的最大值（左边柱子），
+    stack<int> buff_stcak; // 装载下标
+    for (int i = 0; i < height.size(); i++)
+    {
+        while (!buff_stcak.empty() && height[buff_stcak.top()] < height[i])
+        {                               // 保持左低右高 or 左右相等
+            int top = buff_stcak.top(); // 坑底高度
+            buff_stcak.pop();           // 弹出坑底
+            if (buff_stcak.empty())
                 break;
-            //计算:下标差*高度
-            int left = buff_stcak.top();//左柱高度
+            // 计算:下标差*高度
+            int left = buff_stcak.top(); // 左柱高度
             int index_diff = i - left - 1;
             int h = min(height[i], height[left]) - height[top];
             ans += index_diff * h;
-            
         }
-        buff_stcak.push(i);    
+        buff_stcak.push(i);
     }
     return ans;
 }
@@ -1630,7 +1636,40 @@ void test4trap()
     cout << res << endl;
 }
 
+// 3.最长无重复字串长度
+int Solution::lengthOfLongestSubstring(string s)
+{
+    if (s.length() <= 1)
+    {
+        return s.length();
+    }
+    // 需要一个容器来承载无重复字串
+    unordered_map<char, int> smap;
+    int ans = 0;
+    for (int win_l = 0, win_r = 0; win_r < s.length(); ++win_r)
+    {
+        if (smap.find(s[win_r]) != smap.end())
+        { // found
+            // 找到不等于右边的第一个数,获得其下标
+            while (win_l <= smap[s[win_r]])
+            {
+                smap.erase(s[win_l]);
+                ++win_l;
+            }
+        }
+        smap[s[win_r]] = win_r;
+        ans = max(ans, static_cast<int>(smap.size()));
+    }
+    return ans;
+}
 
+void test4lengthOfLongestSubstring()
+{
+    string s = "aabaab!bb";
+    Solution ss;
+    int res = ss.lengthOfLongestSubstring(s);
+    cout << res << endl;
+}
 
 //================END===================//
 
