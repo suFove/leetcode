@@ -38,7 +38,8 @@ int main()
     // test4maxArea();
     // test4threeSum();
     // test4trap();
-    test4lengthOfLongestSubstring();
+    // test4lengthOfLongestSubstring();
+    test4findAnagrams();
 
     // myTest();
     return 0;

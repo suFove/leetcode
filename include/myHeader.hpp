@@ -137,8 +137,10 @@ public:
     std::vector<std::vector<int>> threeSum(std::vector<int> &nums);
     //3.无重复字串长度
     int lengthOfLongestSubstring(std::string s);
-
-
+    //438. 找到字符串中所有字母异位词
+    std::vector<int> findAnagrams(std::string s, std::string p);
+    std::vector<int> findAnagrams_1(std::string s, std::string p);
+    
 
     //==========hard==========//
     //42.
@@ -205,6 +207,12 @@ void test4maxArea();
 void test4threeSum();
 //1.
 void test4lengthOfLongestSubstring();
+//438. 找到字符串中所有字母异位词
+void test4findAnagrams();
+
+
+
+
 
 
 //=============hard============//

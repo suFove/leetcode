@@ -1643,7 +1643,7 @@ int Solution::lengthOfLongestSubstring(string s)
     {
         return s.length();
     }
-    // 需要一个容器来承载无重复字串
+    // 需要一个容器来承载无重复字串 and index
     unordered_map<char, int> smap;
     int ans = 0;
     for (int win_l = 0, win_r = 0; win_r < s.length(); ++win_r)
@@ -1658,7 +1658,7 @@ int Solution::lengthOfLongestSubstring(string s)
             }
         }
         smap[s[win_r]] = win_r;
-        ans = max(ans, static_cast<int>(smap.size()));
+        ans = max(ans, (int)smap.size());
     }
     return ans;
 }
@@ -1669,6 +1669,129 @@ void test4lengthOfLongestSubstring()
     Solution ss;
     int res = ss.lengthOfLongestSubstring(s);
     cout << res << endl;
+}
+
+// 438. 找到字符串中所有字母异位词
+vector<int> Solution::findAnagrams(string s, string p)
+{
+    if (s.length() < p.length() || s.length() <= 0 || p.length() <= 0)
+    {
+        return {};
+    }
+    // s中匹配p<所有顺序>的字串起始下标
+    //  window [] match {word: count}
+    int sLen = s.size(), pLen = p.size();
+
+    if (sLen < pLen)
+    {
+        return vector<int>();
+    }
+
+    vector<int> ans;
+    vector<int> sCount(26);
+    vector<int> pCount(26);
+    // init
+    for (int i = 0; i < pLen; ++i)
+    {
+        ++sCount[s[i] - 'a'];
+        ++pCount[p[i] - 'a'];
+    }
+    // vector 与 vector 可以判定
+    if (sCount == pCount)
+    {
+        ans.emplace_back(0);
+    }
+    // step = 1
+    for (int i = 0; i < sLen - pLen; ++i)
+    {
+        --sCount[s[i] - 'a'];        // 清空上个窗口
+        ++sCount[s[i + pLen] - 'a']; // update next window
+
+        if (sCount == pCount)
+        {
+            ans.emplace_back(i + 1);
+        }
+    }
+    return ans;
+}
+
+// 用差值来更新数值，不好理解
+/**
+如果 counter[s[i] - 'a'] == 1：这意味着在当前窗口中，某个字符 s[i] 的数量正好与字符串 p 中相同。由于我们正在从一个较大的窗口转移到较小的窗口（通过移除前一个字符），这意味着这个特定的字符现在不再是多余的。因此，它使得差异计数器 differ-- 减少1。
+如果 counter[s[i] - 'a'] == 0：意味着在当前窗口中，某个字符的数量原本与字符串 p 中相同（即它是匹配的）。但随着窗口移动到下一个字符（即开始下一轮循环），该位置不再有这个字符。因此，差异计数器 differ++ 增加1。
+如果 counter[s[i + p.length()] - 'a'] == -1：这表示在下一个循环中（即将成为窗口的一部分的字符），它原本不是窗口内的，但现在由于移动到下一次循环它将成为一个额外的字符。因此，差异计数器 differ-- 减少1。
+如果 counter[s[i + p.length()] - 'a'] == 0：这意味着在当前窗口中，有一个额外的字符（即原本不在窗口内的），但是当窗口向前移动时，这个位置正好填补了之前移除的那个字符的位置。因此，差异计数器 differ++ 增加1
+ * 
+ */
+vector<int> Solution::findAnagrams_1(string s, string p)
+{
+    if (s.length() < p.length())
+        return {};
+
+    vector<int> ans;
+    vector<int> counter(26);
+    // 不再使用2个数组分别记录，直接在更新时记录二者插值，判断是否为0，即相同
+    // 第一个窗口init start
+    for (int i = 0; i < p.length(); ++i)
+    {
+        --counter[s[i] - 'a']; 
+        ++counter[p[i] - 'a'];
+    }
+
+    int differ = 0;
+    for (int i = 0; i < p.length(); ++i)
+    {
+        if (counter[i] != 0)
+        {
+            ++differ;
+        }
+    }
+    if (differ == 0)
+    {
+        ans.emplace_back(0);
+    }
+    // end first window
+
+    for (int i = 0; i < s.length() - p.length(); ++i)
+    {
+        //  erase window left
+        if (counter[s[i] - 'a'] == 1) //当前多余，erase之后，differ需要减少该位置的差异
+        { 
+            --differ;
+        }
+        else if (counter[s[i] - 'a'] == 0) //当前匹配，erase之后，就不匹配了
+        { 
+            ++differ;
+        }
+        --counter[s[i] - 'a'];
+        // end erase
+
+        // add window right
+        if (counter[s[i + p.length()] - 'a'] == -1) // 当前不匹配，add之后需要减少当前位置差异
+        { 
+            --differ;
+        }
+        else if (counter[s[i + p.length()] - 'a'] == 0) // 当前匹配，add之后需要增加当前位置差异
+        { 
+            ++differ;
+        }
+        ++counter[s[i + p.length()] - 'a'];
+        // end add
+        if (differ == 0)
+        {
+            ans.emplace_back(i + 1);
+        }
+    }
+    return ans;
+}
+
+void test4findAnagrams()
+{
+    string s = "cbaebabacd";
+    string p = "abc";
+    Solution ss;
+    vector<int> res = ss.findAnagrams_1(s, p);
+    ss.printVector(res);
 }
 
 //================END===================//
