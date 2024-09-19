@@ -34,7 +34,7 @@ void Solution::printVector2D(vector<vector<int>> &res)
     cout << "]" << endl;
 }
 
-void Solution::printVectoString(const vector<std::string> &vec)
+void Solution::printVectorString(const vector<std::string> &vec)
 {
     cout << " [ ";
     for (const auto &s : vec)
@@ -49,7 +49,7 @@ void Solution::printVector2D(vector<vector<string>> &res)
     cout << "[" << endl;
     for (const auto &r : res)
     {
-        printVectoString(r);
+        printVectorString(r);
     }
     cout << "]" << endl;
 }
@@ -1792,6 +1792,219 @@ void test4findAnagrams()
     Solution ss;
     vector<int> res = ss.findAnagrams_1(s, p);
     ss.printVector(res);
+}
+
+//560. 连续子数组的个数： condition: sum = target
+/**
+ * main idea: 寻找一个{seq | sum(seq) = target}
+ * 变化 win_l and win_r; 或者使用队列，但是队列对seq sum没有优化，实际还是下标操作
+ * main loop: 
+ *      continue condition: sum(seq) < target
+ *      end condition: seq[i] == target or sum(seq) == target, change window, 弹出队列头部元素
+ *      optimize condition: if x > traget exsit in seq, change window
+ * note: 以上只考虑了正数情况
+ */
+int Solution::subarraySum(vector<int>& nums, int k){
+    // O(n^2)
+    int ans = 0;
+    for(int cur = 0; cur < nums.size(); ++cur){
+        int sum_nums = 0;
+        for(int tmp_end = cur;  tmp_end >= 0; --tmp_end){//实时统计sum
+            //update
+            sum_nums += nums[tmp_end];
+            if(sum_nums == k){
+                ++ans; 
+            }
+        }   
+    }
+    return ans;
+}
+
+//560. 考虑优化:上面方法加入一个元素，就要重新求已经不满足条件的nums[x:y]的和
+/**
+ * 总结：用前缀和sum(nums[:pre])来作为k，检查所有前缀和出现的次数
+ * 条件：nums[cur] + sum(nums[:i-1]) == target ; 其中 sum(nums[:i-1]) 保存为hash key,
+ * 只需在 hash map 找到 nums[cur] - target == sum(nums[:cur-1]) 是否存在 
+ * 
+ * 初始插入{0，1}，如果满足条件，即pre-k == 0, 则更新ans += {k,v}
+ * 例如 target = 3
+ * 第二个元素应该是{3，1}，下次 pre-k == 3， 则说明 当前满足条件：cur + pre == target
+ * 
+ */
+
+int Solution::subarraySum_1(vector<int>& nums, int k){
+    int ans = 0;
+    unordered_map<int, int> mp;
+    mp[0] = 1;
+    int pre = 0;
+    for (auto& x:nums) {
+        pre += x;
+        if (mp.find(pre - k) != mp.end()) {
+            ans += mp[pre - k];
+        }
+        mp[pre]++;
+    }
+    return ans;
+}
+
+
+void test4subarraySum(){
+    vector<int> nums = {-1,-1,1};
+    int target = 0;
+    Solution ss;
+    int res  = ss.subarraySum_1(nums, target);
+    cout << res << endl;
+}
+
+
+
+/**
+ * 
+239. 滑动窗口最大值
+like max pooling 
+ result: 超时 O(n^win_size) ~= O(n^2)
+ 考虑优化 window 使用优先队列 O(nlgn)
+ */
+vector<int> Solution::maxSlidingWindow(vector<int>& nums, int k)
+{
+    vector<int> ans;
+    priority_queue<int> q;
+    // 1 <= k <= nums.length
+    if(k == nums.size()){
+        ans.emplace_back(*max_element(nums.begin(), nums.end()));
+        return ans;
+    }
+    for(int i = 0; i <= nums.size() - k; ++i){
+        for(int win_l = i; win_l < i + k; ++win_l){
+            // max = nums[win_l] > max ? nums[win_l] : max;
+            q.push(nums[win_l]);
+        }
+        ans.emplace_back(q.top());
+        q = {}; // clear
+    }
+    return ans;
+}
+
+
+
+/**
+ * 
+239. 滑动窗口最大值
+like max pooling 
+ 考虑优化:使用双端队列，2端插入删除为O(1)
+ note：deque 内部存储不是连续的，需要保留原数组的index
+    example: window_size = 3;
+    init [1, 2]
+    next elem = 3 -> [] -> [3]
+    
+ */
+vector<int> Solution::maxSlidingWindow_1(vector<int>& nums, int k){
+    if (k == 1 || k > nums.size()) return nums;
+
+    deque<int> q;// 储存index
+    
+    // init first window; 
+    for(int i = 0; i < k; ++i){
+        while( !q.empty() && nums[i] >= nums[q.back()]){
+            q.pop_back();
+        }//弹出所有比当前小的元素
+        //加入最大元素
+        q.emplace_back(i);
+    }
+    vector<int> ans = {nums[q.front()]};
+
+    // next windows
+    for(int i = k; i < nums.size(); ++i){
+        // filter
+        while(!q.empty() && nums[i] >= nums[q.back()]){
+            q.pop_back();
+        }
+        q.emplace_back(i);
+        // 维护窗口大小, [0, 1, 2, 3](i = 3) -> [1, 2, 3]
+        while(q.front() <= i-k){
+            q.pop_front();
+        }
+        ans.emplace_back(nums[q.front()]);
+    }
+
+    return ans;
+
+}
+
+
+void test4maxSlidingWindow(){
+    vector<int> nums = {1,3,-1,-3,5,3,6,7};
+    int win_size = 3;
+    Solution ss;
+    vector<int> res = ss.maxSlidingWindow_1(nums, win_size);
+    ss.printVector(nums);
+    ss.printVector(res);
+}
+
+
+//76. s涵盖所有t的字串
+/**
+ * main idea: 
+ *      t -> {word : count}
+ *      s -> [pop, push_back], check window word count
+ *      不满足条件win_r++，直到满足条件
+ *      满足条件 win_l++，直到不满足条件
+ */
+string Solution::minWindow(string s, string t){
+    
+    int ans_left = -1;
+    int min_len = INT_MAX;
+    unordered_map<char, int> mp;
+    unordered_map<char, int> mq;
+    queue<int> q; // cache index
+
+
+    for(auto c : t){
+        ++mp[c];
+    }
+
+    //匹配函数：t 中 word count > window 中 word count
+    function<bool()> check =[&]()-> bool{
+        for(auto & scheme : mp){
+            if(scheme.second > mq[scheme.first])
+                return false;
+        }
+        return true;
+    };
+
+    // loop
+    for(int win_l, win_r = 0; win_r < s.length(); win_r++) {
+        //遍历元素 更新mq
+        ++mq[s[win_r]];
+
+        //检查当前元素是否存在在scheme中
+        if(mp.find(s[win_r]) != mp.end()){
+            //对于每一次有效的更新，检查当前窗口中的子串是否是一个合格的子串
+            while(check() && win_l <= win_r){
+                //当前合格，判断是否最小，并记录
+                if(min_len > win_r - win_l + 1){
+                    ans_left = win_l;
+                    min_len = win_r - win_l + 1;
+                }
+                // 尝试缩短窗口
+                --mq[s[win_l]];
+                ++win_l;
+            }
+        }
+    }
+
+    if(ans_left == -1) 
+        return "";
+    else
+        return s.substr(ans_left, min_len);
+}
+
+void test4minWindow(){
+    string s = "ADOBECODEBANC";
+    string t = "ABC";
+    Solution ss;
+    string res = ss.minWindow(s, t);
+    cout << res << endl;
 }
 
 //================END===================//

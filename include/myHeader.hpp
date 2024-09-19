@@ -55,7 +55,7 @@ public:
     void printList(ListNode *head);
     void printVector(const std::vector<int> &vec);
     void printVector2D(std::vector<std::vector<int>> &);
-    void printVectoString(const std::vector<std::string> &vec);
+    void printVectorString(const std::vector<std::string> &vec);
     void printVector2D(std::vector<std::vector<std::string>> &);
 
     // 1.
@@ -140,13 +140,24 @@ public:
     //438. 找到字符串中所有字母异位词
     std::vector<int> findAnagrams(std::string s, std::string p);
     std::vector<int> findAnagrams_1(std::string s, std::string p);
-    
+    //560. 和为 K 的子数组
+    int subarraySum(std::vector<int>& nums, int k);
+    int subarraySum_1(std::vector<int>& nums, int k);
+
+
 
     //==========hard==========//
     //42.
     int trap(std::vector<int>& height);
     int trap_1(std::vector<int>& height);//双指针
     int trap_2(std::vector<int>& height);//单调栈
+
+    //239.滑动窗口最大值
+    std::vector<int> maxSlidingWindow(std::vector<int>& nums, int k);
+    std::vector<int> maxSlidingWindow_1(std::vector<int>& nums, int k);
+
+    //76. 最小覆盖子串
+    std::string minWindow(std::string s, std::string t);
 };
 
 // 1.
@@ -209,7 +220,10 @@ void test4threeSum();
 void test4lengthOfLongestSubstring();
 //438. 找到字符串中所有字母异位词
 void test4findAnagrams();
-
+//560. 
+void test4subarraySum();
+//76. 
+void test4minWindow();
 
 
 
@@ -218,7 +232,7 @@ void test4findAnagrams();
 //=============hard============//
 
 void test4trap();
-
+void test4maxSlidingWindow();
 
 
 //=== My Test====

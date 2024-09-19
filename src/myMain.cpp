@@ -39,8 +39,10 @@ int main()
     // test4threeSum();
     // test4trap();
     // test4lengthOfLongestSubstring();
-    test4findAnagrams();
-
+    // test4findAnagrams();
+    // test4subarraySum();
+    // test4maxSlidingWindow();
+    test4minWindow();
     // myTest();
     return 0;
 }
