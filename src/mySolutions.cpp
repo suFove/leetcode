@@ -2007,6 +2007,63 @@ void test4minWindow(){
     cout << res << endl;
 }
 
+//53. 找到最大和的子数组
+/**
+ * main idea:
+ *      window left and right: 
+ *      [-1] -> [-1, 2] -> [2]
+ *      win_r 加入产生最大值:
+ *      while(试图删除 win_l | win_r <= win_r)
+ *      max seq[i] = max seq[i-1] 
+ * 只能完成O(n^2) 方法，因为要回看max
+ * 
+ * 尝试修改：
+ *      main idea : 若前一个元素 > 0; 则加到当前元素上
+ *      动态规划状态转移方程
+ *      f(i) = max{ f(i−1) + nums[i] , nums[i] }
+ * 
+ * 不难给出一个时间复杂度 O(n)、空间复杂度 O(n) 的实现，
+ * 即用一个 f 数组来保存 f(i) 的值，用一个循环求出所有 f(i)。考虑到 f(i) 只和 f(i−1) 相关，
+ * 于是我们可以只用一个变量 pre 来维护对于当前 f(i) 的 f(i−1) 的值是多少，从而让空间复杂度降低到 O(1)，
+ * 这有点类似「滚动数组」的思想。
+ */
+int Solution::maxSubArray(vector<int>& nums){
+    vector<int> dp = nums;
+    int ans = 0;
+    //若前一个元素 > 0， 则加上当前元素
+    for(int i = 1; i < nums.size(); ++i){
+        if(dp[i-1] > 0){
+            dp[i] = dp[i-1] + nums[i];
+        }
+    }
+    ans = *max_element(dp.begin(), dp.end());
+    return ans;
+}
+
+/**
+ * 贪心：如果 sum[0:i] < 0, 则丢弃前面的和
+ *  
+ */
+int Solution::maxSubArray_1(vector<int>& nums){
+    int max_sum = nums[0];
+    int cur_sum = 0;
+    for(auto & x : nums){
+        cur_sum = max(cur_sum + x, x); // 当前和 = 之前和 + 当前值 | 当前值（去掉之前和）
+        max_sum = max(max_sum , cur_sum); //记录最大值
+    }
+    return max_sum;
+}
+
+void test4maxSubArray(){
+    vector<int> nums = {-2,1,-3,4,-1,2,1,-5,4};
+    Solution ss;
+    int res = ss.maxSubArray(nums);
+    // int res = ss.maxSubArray_1(nums);
+    cout << res << endl;
+}
+
+
+
 //================END===================//
 
 void myTest()

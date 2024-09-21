@@ -143,8 +143,9 @@ public:
     //560. 和为 K 的子数组
     int subarraySum(std::vector<int>& nums, int k);
     int subarraySum_1(std::vector<int>& nums, int k);
-
-
+    //53. 最大子数组和
+    int maxSubArray(std::vector<int>& nums);
+    int maxSubArray_1(std::vector<int>& nums);
 
     //==========hard==========//
     //42.
@@ -224,7 +225,8 @@ void test4findAnagrams();
 void test4subarraySum();
 //76. 
 void test4minWindow();
-
+//53.
+void test4maxSubArray();
 
 
 

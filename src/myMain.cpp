@@ -42,7 +42,11 @@ int main()
     // test4findAnagrams();
     // test4subarraySum();
     // test4maxSlidingWindow();
-    test4minWindow();
+    // test4minWindow();
+    test4maxSubArray();
+
+
+
     // myTest();
     return 0;
 }
