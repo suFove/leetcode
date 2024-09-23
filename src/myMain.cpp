@@ -43,7 +43,9 @@ int main()
     // test4subarraySum();
     // test4maxSlidingWindow();
     // test4minWindow();
-    test4maxSubArray();
+    // test4maxSubArray();
+    // test4merge();
+    test4rotate();
 
 
 

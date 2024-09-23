@@ -146,6 +146,12 @@ public:
     //53. 最大子数组和
     int maxSubArray(std::vector<int>& nums);
     int maxSubArray_1(std::vector<int>& nums);
+    //56. 合并区间
+    std::vector<std::vector<int>> merge(std::vector<std::vector<int>>& intervals);
+    //189. 轮转数组
+    void rotate(std::vector<int>& nums, int k);
+    void rotate_1(std::vector<int>& nums, int k);
+
 
     //==========hard==========//
     //42.
@@ -208,7 +214,8 @@ void test4maxProfit();
 void test4climbStairs();
 // 118.
 void test4generate();
-
+// 56. 
+void test4merge();
 
 //=============mid============//
 // 49.
@@ -227,8 +234,8 @@ void test4subarraySum();
 void test4minWindow();
 //53.
 void test4maxSubArray();
-
-
+//189.
+void test4rotate();
 
 
 //=============hard============//

@@ -2062,6 +2062,104 @@ void test4maxSubArray(){
     cout << res << endl;
 }
 
+// 56. 每个内部元素都是长度为2的数组 [ [1,4] [1,5] ] -> [[4,5]] return 一个不重叠的区域
+vector<vector<int>> Solution::merge(vector<vector<int>>& intervals){
+    vector<vector<int>> ans;
+    for(auto &x : intervals)
+        if(x[0] > x[1])
+            swap(x[0], x[1]);
+    sort(intervals.begin(), intervals.end());
+    printVector2D(intervals);
+
+    ans.emplace_back(intervals[0]);
+    for(int i = 1; i < intervals.size(); ++i){
+        //从第2个元素开始，找结束标记， 重叠条件
+        if( (ans.back()[0] <= intervals[i][0] && intervals[i][0] <= ans.back()[1]) || (intervals[i][0] <= ans.back()[1] && ans.back()[1] <= intervals[i][1]))
+        {   
+            int first = min(intervals[i][0], ans.back()[0]);
+            int second = max(intervals[i][1], ans.back()[1]);
+            vector<int> tmp = {first, second};
+            //当前与前一个发生重叠，考虑加入ans
+            ans.back() = tmp;
+        }else{//不重叠 直接加入
+            ans.emplace_back(intervals[i]);
+        }     
+    }
+
+    return ans;
+}
+
+
+void test4merge(){
+    vector<vector<int>> intervals = {{1,3},{2,6},{8,10},{15,18}};
+    // vector<vector<int>> intervals = {{1,4},{0,4}};
+    // vector<vector<int>> intervals = {{1,4},{0,2}, {3,5}};
+    Solution ss;
+    vector<vector<int>> res = ss.merge(intervals);
+    ss.printVector2D(res);
+}
+
+//189. 轮转数组，类似于马戏团传送带，向右移动次数k
+void Solution::rotate(vector<int>& nums, int k){
+    //length = 1
+    if(nums.size() == 1) return;
+    //最容易想到是新建数组，定位起始和终止下标
+    vector<int> cy_nums;
+    int start_idx = nums.size() - (k % nums.size());
+    int end_idx = start_idx-1;
+    while(start_idx < nums.size()){
+        cy_nums.emplace_back(nums[start_idx]);
+        ++start_idx;
+    }
+    for(int i = 0; i <= end_idx; ++i){
+        cy_nums.emplace_back(nums[i]);
+    }
+    nums = cy_nums;
+}
+
+// 189.
+void Solution::rotate_1(vector<int>& nums, int k){
+    //length = 1
+    if(nums.size() == 1) return;
+    // 利用反转字串
+    vector<int> cy_nums;
+    int start_idx = nums.size() - (k % nums.size());
+    // 反转尾部， 反转头部， 反转整体
+    reverse(nums.begin() + start_idx, nums.end());
+    reverse(nums.begin(), nums.begin() + start_idx);
+    reverse(nums.begin(), nums.end());
+}
+
+void test4rotate(){
+    vector<int> nums = {1,2,3,4,5,6,7};
+    int k = 10;
+    Solution ss;
+    ss.rotate_1(nums, k);
+    ss.printVector(nums);   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //================END===================//
