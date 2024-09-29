@@ -2138,10 +2138,175 @@ void test4rotate(){
     ss.printVector(nums);   
 }
 
+//238. 除了自身以外数组的乘积
+/**
+ * 实际是找子数组的乘积，想办法把子数组保存利用
+ * [1,2,3,4] -> [ [2,3,4], [1,3,4], [1,2,4], [1,2,3] ]
+ *
+ * [2,3,4,1]
+ * [3,4,1,2]
+ * [4,1,2,3]
+ * 
+ * 求所有列的乘积时间复杂度是 O(N*(N-1)) ~ O(N^2)
+ * 上述方案 pass
+ * 
+ * O(n)解决方案：
+ *  将当前idx看作分界线，只需要考虑 左子数组 * 右子数组 即可
+ */
+vector<int> Solution::productExceptSelf(vector<int>& nums){
+    
+    //curr = left[last] * nums[last]
+    vector<int> left_muti(nums.size());// 从左向右 所有乘积
+    vector<int> right_muti(nums.size());// 从右向左 所有乘积
+    vector<int> ans(nums.size());
+    // 初始化为 1
+    left_muti[0] = right_muti[nums.size()-1] = 1;
+
+    for(int i = 1; i < nums.size(); ++i){
+        left_muti[i] = left_muti[i-1] * nums[i-1];
+    }
+
+    for(int j = nums.size()-2; j >=0; --j){
+        right_muti[j] = right_muti[j+1] * nums[j+1];
+    }
+
+    for(int k = 0; k < nums.size(); ++k){
+        ans[k] = left_muti[k] * right_muti[k];
+    }
+
+    return ans;
+}
 
 
+void test4productExceptSelf(){
+    vector<int> nums = {1,2,3,4};
+    Solution ss;
+    vector<int> res =  ss.productExceptSelf(nums);
+    ss.printVector(res);
+
+}
+
+//41. 缺失的第一个正数
+/**
+ * 数组未排序，不连续
+ * 最简单的 hash map, 全部放入，如果长度==数组长度，则返回length+1
+ * 技巧：需要处理负数
+ *      1. 负数转为正数，数值为 length+1 {目的：如果全是负数，则会返回 length + 1, 符合题目假设}
+ *      2. 原数值小于 length , 则对应 “排序的位置（数值所旨位置）” 转为负数 {目的：转为负数，以便查找正数的连续性}
+ *      3. 返回第一个 正数的下标+1
+ */
+int Solution::firstMissingPositive(vector<int>& nums){
+    int n = nums.size();
+    for (int& num: nums) {
+        if (num <= 0) {
+            num = n + 1;
+        }
+    }
+    for (int i = 0; i < n; ++i) {
+        int num = abs(nums[i]);
+        if (num <= n) {
+            nums[num - 1] = -abs(nums[num - 1]);
+        }
+    }
+    // 返回第一个正数
+    for(int i = 0; i < nums.size(); ++i){
+        if(nums[i] > 0){
+            return i+1;
+           
+        }         
+    }
+    return nums.size()+1;
+}
 
 
+// 方法 2：
+/**
+ * 采用置换手段
+ * 如果位置全部正确，置换完应有【1，2，3，4....n】，即 数组的第 x−1 个元素为 x
+ * 考虑数组恢复方法：
+ *      如果当前元素 数值在【1，n】范围，则检查 nums【value-1】位置已经存在value，不存在则置换
+ */
+int Solution::firstMissingPositive_1(vector<int>& nums){
+    int length = nums.size();
+    for(int i = 0; i < length; ++i){
+        while(nums[i] > 0 && nums[i] <= length && nums[nums[i] - 1] != nums[i]){
+            swap(nums[nums[i] - 1], nums[i]);
+        }
+    }
+    for(int i = 0; i < length; ++i){
+        if(nums[i] != i+1){
+            return i+1;
+        }
+    }
+    return length+1;
+}
+
+void test4firstMissingPositive(){
+    vector<int> nums = {3,4,-1,1};
+    Solution ss;
+    int res1 = ss.firstMissingPositive(nums);
+    int res2 = ss.firstMissingPositive_1(nums);
+    cout << res1 << endl;
+    cout << res2 << endl;
+}
+
+
+//73. 矩阵置零
+/**
+ * 使用额外空间来记录应该标记的地点
+ * 可以使用 m x n 的大空间
+ * 考虑优化： 使用2个数组，长度分别为m和n，也可以记录
+ */
+void Solution::setZeroes(vector<vector<int>>& matrix){
+    int m = matrix.size();
+    int n = matrix[0].size();
+    // 额外空间记录
+    vector<bool> row_tag(m);
+    vector<bool> col_tag(n);
+
+    for(int i = 0; i < m; ++i){
+        for(int j = 0; j < n; ++j){
+            if(matrix[i][j] == 0){
+                row_tag[i] = true;
+                col_tag[j] = true;
+            }
+        }
+    }
+
+    for(int i = 0; i < m; ++i){
+        if(row_tag[i]){
+            for(auto & x : matrix[i]){
+                x = 0;
+            } 
+        }
+        
+    }
+    for(int j = 0; j < n; ++j){
+        if(col_tag[j]){
+            for(auto & x : matrix){
+                x[j] = 0;
+            } 
+        }
+    }
+    
+
+}
+
+
+void test4setZeroes(){
+    vector<vector<int>> matrix = {  {1,1,1},
+                                    {1,0,1},
+                                    {1,1,1} };
+    Solution ss;
+    cout << "The original:" << endl;
+    ss.printVector2D(matrix);
+    
+   
+    ss.setZeroes(matrix);
+    cout << "Seted zero:" << endl;
+    ss.printVector2D(matrix);
+
+}
 
 
 //================END===================//
@@ -2155,9 +2320,32 @@ void myTest()
     // cout << *pb << endl;
     // cout << *pc << endl;
 
-    string ss = "hello";
-    string cc = ss;
-    sort(ss.begin(), ss.end());
-    cout << ss << endl;
-    cout << cc << endl;
+    // string ss = "hello";
+    // string cc = ss;
+    // sort(ss.begin(), ss.end());
+    // cout << ss << endl;
+    // cout << cc << endl;
+    // int a[][3] = {1,2,3,4,5,6};
+    // int (*p)[3] = a;
+    // cout << (*p)[1] << (*p)[2] << endl;
+
+    // p++;
+
+    // cout << (*p)[1] << (*p)[2] << endl;
+
+
+    // int a[2][3] = {0,1,2,3,4,5};
+    // int *p = &a[0][0];
+    // cout << p[1*3 + 0] << endl;
+    
+    // a [] = {231312}
+    // b [] = {没初始化}
+    // c [] = {}
+    int a[] = {1,2,3,4,5,6};
+    int * p1 = (int *)(&a+1);
+    int * p2 = (int * )&a+1; 
+    cout << *(p1-0) << endl;
+    cout << *(p1-1) << endl;
+    cout << *p2 << endl;
+
 }

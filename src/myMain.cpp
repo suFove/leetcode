@@ -45,9 +45,11 @@ int main()
     // test4minWindow();
     // test4maxSubArray();
     // test4merge();
-    test4rotate();
-
-
+    // test4rotate();
+    // myTest();
+    // test4productExceptSelf();
+    // test4firstMissingPositive();
+    test4setZeroes();
 
     // myTest();
     return 0;

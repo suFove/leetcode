@@ -151,8 +151,12 @@ public:
     //189. 轮转数组
     void rotate(std::vector<int>& nums, int k);
     void rotate_1(std::vector<int>& nums, int k);
+    //238. 除自身以外数组的乘积
+    std::vector<int> productExceptSelf(std::vector<int>& nums);
+    //73. 矩阵置零
+    void setZeroes(std::vector<std::vector<int>>& matrix);
 
-
+    
     //==========hard==========//
     //42.
     int trap(std::vector<int>& height);
@@ -165,6 +169,10 @@ public:
 
     //76. 最小覆盖子串
     std::string minWindow(std::string s, std::string t);
+    //41. 缺失的第一个正数
+    int firstMissingPositive(std::vector<int>& nums);
+    int firstMissingPositive_1(std::vector<int>& nums);
+    
 };
 
 // 1.
@@ -236,13 +244,15 @@ void test4minWindow();
 void test4maxSubArray();
 //189.
 void test4rotate();
-
-
+//238.
+void test4productExceptSelf();
+//73. 
+void test4setZeroes();
 //=============hard============//
 
 void test4trap();
 void test4maxSlidingWindow();
-
+void test4firstMissingPositive();
 
 //=== My Test====
 void myTest();
