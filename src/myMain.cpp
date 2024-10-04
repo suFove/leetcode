@@ -49,8 +49,13 @@ int main()
     // myTest();
     // test4productExceptSelf();
     // test4firstMissingPositive();
-    test4setZeroes();
+    // test4setZeroes();
 
-    // myTest();
+    // test4increasingTriplet();
+    // test4spiralOrder();
+    // test4rotateMatrix();
+    test4searchMatrix();
+    
     return 0;
 }
+

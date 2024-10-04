@@ -2288,8 +2288,6 @@ void Solution::setZeroes(vector<vector<int>>& matrix){
             } 
         }
     }
-    
-
 }
 
 
@@ -2307,6 +2305,293 @@ void test4setZeroes(){
     ss.printVector2D(matrix);
 
 }
+
+//334. 递增的三元子序列
+bool Solution::increasingTriplet(std::vector<int>& nums){
+    // 维护 min and max 2 个变量，表示一条折线的最低点和最高点
+    // true 条件： 出现了比当前 max 更大的 元素；
+    int start_min = nums[0];
+    int end_max = INT_MAX;
+
+    for(int i = 1; i < nums.size(); ++i){
+        // cout << i << ' ';
+        // 满足条件
+        if(nums[i] > end_max) 
+            return true;
+        if(nums[i] > start_min) // 老折线头 + 新顶峰
+            end_max = nums[i];
+        else{// 新的折线头
+            start_min = nums[i];
+            // end_max = INT_MAX; // 不用添加重置max条件，保留之前折线的可用性
+        }
+    } 
+    return false;
+}
+
+// 返回最大 递增 三元组 的值
+int Solution::getIncreasingTripletValue(std::vector<int>& nums){
+    //找最大三元组
+    deque<int> ans;// 用于储存三元组的
+    ans.emplace_back(nums[0]);
+    // 记录最大值下标
+    // int max_idx_start = 0;
+    int max_value = INT_MIN;
+    // 从 frist window + step 1 开始
+    for(int i = 1; i < nums.size(); ++i){
+        int cur_value = 0;// 记录当前递增三元组的值
+        // 数组满3个，考虑弹出
+        if(ans.size() == 3){
+            cur_value = accumulate(ans.begin(), ans.end(), 0);
+            if( max_value < cur_value){ // 更新
+                // max_idx_start = i;
+                max_value = cur_value;
+            }
+            ans.pop_front(); // 弹出前端
+        }
+        // 满足递增则入
+        if(nums[i] > ans.back()){
+            ans.push_back(nums[i]);
+        }  
+    }
+
+    if(ans.size() == 3){
+        int last_value = accumulate(ans.begin(), ans.end(), 0);
+        return max_value > last_value ? max_value : last_value;
+    }
+    return max_value != INT_MIN ? max_value : 0;
+}
+
+
+void test4increasingTriplet(){
+    vector<int> nums = {20,100,10,101,5,13};
+    Solution ss;
+    // int res = ss.getIncreasingTripletValue(nums);
+    bool res = ss.increasingTriplet(nums);
+    cout << res << endl;
+}
+
+
+// 54. 返回 mxn 矩阵的顺时针访问顺序
+/**
+ * 转换一下思维：缩小边界条件
+ */
+vector<int> Solution::spiralOrder(vector<vector<int>>& matrix){
+    vector<int> ans;
+    if(matrix.empty()) return ans; //若数组为空，直接返回答案
+    // 定义上下左右边界, 注意是下标
+    int top = 0;
+    int bottom = matrix.size() - 1; 
+    int left = 0;
+    int right = matrix[0].size() - 1;
+    // loop, 结束条件 上下重合，或者左右重合
+    while(true){
+         // 移动最上方，向右移动
+        for(int i = left; i <= right; ++i)   ans.emplace_back(matrix[top][i]);
+        if(++top > bottom)  break; // 缩减上方边界
+         // 移动最右端，从上到下
+        for(int i = top; i <= bottom; ++i)     ans.emplace_back(matrix[i][right]);
+        if(--right < left)  break; // 缩减右方边界
+         // 最顶端，从右向左
+        for(int i = right; i >= left; --i)  ans.emplace_back(matrix[bottom][i]);
+        if(--bottom < top)  break; // 缩减下方边界
+         // 最左边，从下到上
+        for(int i = bottom; i >= top; --i)  ans.emplace_back(matrix[i][left]);
+        if(++left > right)  break; // 缩减左方边界
+    }
+    return ans;
+}
+
+void test4spiralOrder(){
+    vector<vector<int>> matrix = {  {1,2,3},
+                                    {4,5,6},
+                                    {7,8,9} };
+    Solution ss;
+    cout << "The original:" << endl;
+    ss.printVector2D(matrix);
+    
+   
+    vector<int> res = ss.spiralOrder(matrix);
+    cout << "Sprial sequence:" << endl;
+    ss.printVector(res);
+}
+
+//48. 原地旋转二维矩阵  n × n
+/**
+ * 1.寻找位置映射关系： [i,j] -> [j, i]; 使用辅助数组
+ * 2.原地方法：沿主对角线为对称轴，交换
+ *            对每一行进行reverse，即可得到target数组
+ * 
+ */
+void Solution::rotate(vector<vector<int>>& matrix){
+    int n = matrix.size();
+    // 对称交换
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < i; ++j){
+            if(i == j) continue;
+            swap(matrix[i][j], matrix[j][i]);
+        }
+    }
+    // 反转每一行
+    for(auto &line: matrix){
+        reverse(line.begin(), line.end());
+    }
+}
+
+
+void test4rotateMatrix(){
+    vector<vector<int>> matrix = {  {1,2,3},
+                                    {4,5,6},
+                                    {7,8,9} };
+    Solution ss;
+    cout << "The original:" << endl;
+    ss.printVector2D(matrix);
+    
+   
+    ss.rotate(matrix);
+    cout << "Rotated matrix:" << endl;
+    ss.printVector2D(matrix);
+}
+
+
+//240. 搜索二维矩阵的target
+/**
+ * 1.暴力法
+ */
+bool Solution::searchMatrix(vector<vector<int>>& matrix, int target){
+    for(auto &line : matrix){
+        for(auto &ele : line){
+            if(target == ele)
+                return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * 思考优化方法
+ * 已知：
+ *  m x n 矩阵
+ *  每行的元素从左到右升序排列。每列的元素从上到下升序排列。
+ *  使用二叉搜索确定行，再用二叉搜索确定列
+ *  O(LogN+MLogN)
+ */
+bool Solution::searchMatrix_1(vector<vector<int>>& matrix, int target){
+   
+
+    // 二分查找 辅助函数
+    function<int (vector<vector<int>>&, int, int, int)> halfSearch = [&](vector<vector<int>>& matrix, int row = -1, int col = -1, int target = 0) -> int{
+        // 通过参数确定从行查找还是从列查找
+        int m = matrix.size();
+        int n = matrix[0].size();
+        
+        // 未规定行，从列开始查找
+        if(row == -1){
+            int top = 0;
+            int bottom = m-1;
+            int mid_line = 0;
+            while(top <= bottom){
+                mid_line = top + (bottom - top)/2;
+                if(matrix[mid_line][col] > target){
+                    bottom = mid_line -1;
+                }else if( matrix[mid_line][col] < target){
+                    top = mid_line + 1;
+                }else{
+                    return mid_line;
+                }    
+            }
+            return mid_line; // 最近 大于target的哪一行
+        }
+        // 未规定列，从行还是查找
+        if(col == -1){
+            int left = 0;
+            int right = n-1;
+            int mid_col = 0;
+            while(left <= right){
+                mid_col = left + (right - left)/2;
+                if(matrix[row][mid_col] > target){
+                    right = mid_col-1;
+                }else if( matrix[row][mid_col] < target){
+                    left = mid_col + 1;
+                }else{ // 找到target
+                    return mid_col;
+                }    
+            }
+            return -1;
+        }   
+        return -1;
+    };
+
+    int row_idx = halfSearch(matrix, -1, 0, target);
+    if(row_idx == -1) return false;
+    for(int i = row_idx; i >= 0; --i){ // 对所有满足条件的行进行遍历
+        int col_idx = halfSearch(matrix, i, -1, target);
+        if(col_idx >= 0) return true;
+    }
+    return false;
+}
+
+/**
+ * 因为是有序的，考虑从结点路径改变。
+ * 类似于二叉搜索树
+ * 
+ */
+bool Solution::searchMatrix_2(vector<vector<int>>& matrix, int target){
+    int m =matrix.size();
+    int n =matrix[0].size();
+    int row = 0;
+    int col = n-1; // 从每行最后一个元素开始，便于跳行，或是锁定该行
+    while(row < m && col >= 0){
+        // 结束条件
+        if(matrix[row][col] == target)
+            return true;
+
+        if(matrix[row][col] > target){
+            --col;
+        }else{ // curr < target -> 需要跳行了
+            ++row;
+        }
+    }
+    return false;
+}
+
+
+void test4searchMatrix(){
+    // vector<vector<int>> matrix = {  {1,4,7,11,15},
+    //                                 {2,5,8,12,19},
+    //                                 {3,6,9,16,22},
+    //                                 {10,13,14,17,24},
+    //                                 {18,21,23,26,30}    };
+    vector<vector<int>> matrix = { {5}, {6} };
+    Solution ss;
+    cout << "The original:" << endl;
+    ss.printVector2D(matrix);
+    
+   
+    bool res = ss.searchMatrix_2(matrix, 6);
+    cout << res << endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //================END===================//
@@ -2341,11 +2626,47 @@ void myTest()
     // a [] = {231312}
     // b [] = {没初始化}
     // c [] = {}
-    int a[] = {1,2,3,4,5,6};
-    int * p1 = (int *)(&a+1);
-    int * p2 = (int * )&a+1; 
-    cout << *(p1-0) << endl;
-    cout << *(p1-1) << endl;
-    cout << *p2 << endl;
+    // int a[] = {1,2,3,4,5,6};
+    // int * p1 = (int *)(&a+1);
+    // int * p2 = (int * )&a+1; 
+    // cout << *(p1-0) << endl;
+    // cout << *(p1-1) << endl;
+    // cout << *p2 << endl;
 
-}
+    // enum string{
+    //     x1, x2, x3=10, x4, x5
+    // }x;
+    // cout << x << endl;
+
+    // char buffer[6] = {0};
+    // char *s = "Hello World!";
+    // for (int i = 0; i < sizeof(buffer) - 1; i++)
+    // {
+    //     buffer[i] = *(s + i);
+    // }
+    // for(auto x : buffer)
+    //     cout << x << endl;
+
+
+    // int a[10];
+
+    // int * e[10];
+    // int (* f)[10];
+    // int (*a)(int);
+    // int(*a[10])(int);
+
+    vector<int> tmp;
+    int i = 0;
+    int number = 0;
+    string line, word;
+    getline(cin, line);
+    //将记录绑定到刚刚读取的行，用到了sstream里面的对象
+    istringstream record(line);
+    while (record >> word)
+    {
+        tmp.push_back(atoi(word.c_str()));
+    }
+    for(auto x: tmp){
+        cout << x << " ";
+    }
+}       

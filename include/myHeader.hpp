@@ -156,7 +156,20 @@ public:
     //73. 矩阵置零
     void setZeroes(std::vector<std::vector<int>>& matrix);
 
-    
+    //334. 最大递增三元组
+    bool increasingTriplet(std::vector<int>& nums);
+    //返回最大递增三元组数值的值
+    int getIncreasingTripletValue(std::vector<int>& nums);
+    //54. 顺时针返回 m x n 矩阵的访问顺序
+    std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix);
+    //48. 顺时针旋转二维矩阵90度
+    void rotate(std::vector<std::vector<int>>& matrix);
+    //240. 搜索二维矩阵的target
+    bool searchMatrix(std::vector<std::vector<int>>& matrix, int target);
+    bool searchMatrix_1(std::vector<std::vector<int>>& matrix, int target);
+    bool searchMatrix_2(std::vector<std::vector<int>>& matrix, int target);
+
+
     //==========hard==========//
     //42.
     int trap(std::vector<int>& height);
@@ -248,6 +261,16 @@ void test4rotate();
 void test4productExceptSelf();
 //73. 
 void test4setZeroes();
+//334. 
+void test4increasingTriplet();
+//54.
+void test4spiralOrder();
+//48.
+void test4rotateMatrix();
+//240.
+void test4searchMatrix();
+
+
 //=============hard============//
 
 void test4trap();
