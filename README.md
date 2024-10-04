@@ -1,4 +1,4 @@
-# LeetCode Solutions (C++)
+# Self LeetCode Solutions (C++) 
 
 A collection of my solutions to LeetCode problems for personal practice and review, written in C++.
 
@@ -44,7 +44,7 @@ Each solution is written within a class named after the problem, e.g., `Solution
 
 3. Open the solution file and review the code within the corresponding class.
 
-4. To compile and run a specific solution, use the following command (replace `<problem_number>` with the appropriate number):
+4. To compile and run a specific solution, use the search command, and run the test block.
 
 
 ## Contributing
