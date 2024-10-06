@@ -54,6 +54,26 @@ void Solution::printVector2D(vector<vector<string>> &res)
     cout << "]" << endl;
 }
 
+
+// 创建链表
+ListNode* create_list(ListNode* head, vector<int> vec) {
+    for (int i = 0; i < vec.size(); ++i) {
+        ListNode* node = new ListNode(vec[i]);
+        if (!head) {
+            head = node;
+        } else {
+            ListNode* cur = head;
+            while (cur->next) {
+                cur = cur->next;
+            }
+            cur->next = node;
+        }
+    }
+    return head;
+}
+
+
+
 //======= easy =========//
 // 1.两数之和
 vector<int> Solution::twoSum1(vector<int> &nums, int target)
@@ -105,7 +125,7 @@ void test4twoSum()
             cout << ele << endl;
 }
 
-// 1.两数之和
+// 2.两数之和
 ListNode *Solution::addTwoNumbers(ListNode *l1, ListNode *l2)
 {
     ListNode *dummy = new ListNode();
@@ -133,6 +153,58 @@ ListNode *Solution::addTwoNumbers(ListNode *l1, ListNode *l2)
 
     return dummy->next;
 }
+
+
+//2. 2数相加
+/**
+ * 链表储存数的每一位
+ * 输入：l1 = [2,4,3], l2 = [5,6,4]
+ * 输出：[7,0,8]
+ * 解释：342 + 465 = 807
+ * 注意！链表是从个位开始存储的！下面情况针对从高位开始储存
+ * 1.申请2个栈，进行链表反转 (x)
+ * 2.反转两个链表，再反转结果 (x)
+ * 3.同时递归2个链表，加和返回给上一个结点 (x)
+ */
+ListNode* Solution::addTwoNumbers_1(ListNode* l1, ListNode* l2){
+    ListNode * ans_head = new ListNode();
+    ListNode * cur_node = ans_head;
+    int carry = 0; // 进位
+    //因为链表是从个位开始，加和 进位
+    while(l1 || l2 ||carry){
+        int sum = carry; // 保留上一个结点进位
+        if(l1){
+            sum += l1->val;
+            l1 = l1->next;
+        }
+        if(l2){
+            sum += l2->val;
+            l2 = l2->next;
+        }
+        carry = sum / 10; // 保存进位, 留到下个结点使用
+        cur_node->next = new ListNode(sum % 10); //储存个位
+        cur_node= cur_node->next;
+    }
+    return ans_head->next;
+}   
+
+void test4addTwoNumbers(){
+    vector<int> l1_val = {2,4,3};
+    ListNode* l1_head = nullptr;
+    l1_head = create_list(l1_head, l1_val);
+
+    vector<int> l2_val = {5,6,4};
+    ListNode* l2_head = nullptr;
+    l2_head = create_list(l2_head, l2_val);
+
+    Solution ss;
+    ss.printList(l1_head);
+    ss.printList(l2_head);
+
+    ListNode* res = ss.addTwoNumbers_1(l1_head, l2_head);
+    ss.printList(res);
+}
+
 
 // 4.寻找两个正序数组的中位数
 // （归并）合并两个数组，找中位数
@@ -2476,8 +2548,6 @@ bool Solution::searchMatrix(vector<vector<int>>& matrix, int target){
  *  O(LogN+MLogN)
  */
 bool Solution::searchMatrix_1(vector<vector<int>>& matrix, int target){
-   
-
     // 二分查找 辅助函数
     function<int (vector<vector<int>>&, int, int, int)> halfSearch = [&](vector<vector<int>>& matrix, int row = -1, int col = -1, int target = 0) -> int{
         // 通过参数确定从行查找还是从列查找
@@ -2571,13 +2641,15 @@ void test4searchMatrix(){
     cout << res << endl;
 }
 
+// 19. 删除链表的倒数第n个结点
+ListNode* removeNthFromEnd(ListNode* head, int n){
 
+}
 
+//19.
+void test4removeNthFromEnd(){
 
-
-
-
-
+}
 
 
 

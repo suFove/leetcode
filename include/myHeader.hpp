@@ -57,13 +57,13 @@ public:
     void printVector2D(std::vector<std::vector<int>> &);
     void printVectorString(const std::vector<std::string> &vec);
     void printVector2D(std::vector<std::vector<std::string>> &);
-
+    ListNode* create_list(ListNode* head, std::vector<int>);
     // 1.
     std::vector<int> twoSum1(std::vector<int> &, int);
     std::vector<int> twoSum2(std::vector<int> &, int);
-    //
+    // 2. 两数相加
     ListNode *addTwoNumbers(ListNode *, ListNode *);
-
+    ListNode* addTwoNumbers_1(ListNode* l1, ListNode* l2);
     //
     double findMedianSortedArrays(std::vector<int> &, std::vector<int> &);
     double findMedianSortedArrays_2(std::vector<int> &, std::vector<int> &);
@@ -168,7 +168,8 @@ public:
     bool searchMatrix(std::vector<std::vector<int>>& matrix, int target);
     bool searchMatrix_1(std::vector<std::vector<int>>& matrix, int target);
     bool searchMatrix_2(std::vector<std::vector<int>>& matrix, int target);
-
+    // 19. 删除链表的倒数第n个结点
+    ListNode* removeNthFromEnd(ListNode* head, int n);
 
     //==========hard==========//
     //42.
@@ -269,8 +270,10 @@ void test4spiralOrder();
 void test4rotateMatrix();
 //240.
 void test4searchMatrix();
-
-
+//2. 
+void test4addTwoNumbers();
+//19.
+void test4removeNthFromEnd();
 //=============hard============//
 
 void test4trap();
