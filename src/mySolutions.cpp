@@ -56,7 +56,7 @@ void Solution::printVector2D(vector<vector<string>> &res)
 
 
 // 创建链表
-ListNode* create_list(ListNode* head, vector<int> vec) {
+ListNode* Solution::create_list(ListNode* head, vector<int> vec) {
     for (int i = 0; i < vec.size(); ++i) {
         ListNode* node = new ListNode(vec[i]);
         if (!head) {
@@ -189,15 +189,16 @@ ListNode* Solution::addTwoNumbers_1(ListNode* l1, ListNode* l2){
 }   
 
 void test4addTwoNumbers(){
+    Solution ss;
     vector<int> l1_val = {2,4,3};
     ListNode* l1_head = nullptr;
-    l1_head = create_list(l1_head, l1_val);
+    l1_head = ss.create_list(l1_head, l1_val);
 
     vector<int> l2_val = {5,6,4};
     ListNode* l2_head = nullptr;
-    l2_head = create_list(l2_head, l2_val);
+    l2_head = ss.create_list(l2_head, l2_val);
 
-    Solution ss;
+    
     ss.printList(l1_head);
     ss.printList(l2_head);
 
@@ -2642,13 +2643,59 @@ void test4searchMatrix(){
 }
 
 // 19. 删除链表的倒数第n个结点
-ListNode* removeNthFromEnd(ListNode* head, int n){
-
+/**
+ * 首先要定位到倒数第n个结点
+ * 思考：能不能使用一步遍历来定位？
+ * 
+ */
+ListNode* Solution::removeNthFromEnd(ListNode* head, int n){
+    // 遍历一遍， 记录 node_count - n = idx;
+    int node_count = 0;
+    ListNode* p = head;
+    while(p){
+        ++node_count;
+        p = p->next;
+    }
+    p = head;
+    for(int i = 1; i < node_count - n; ++i){ // 定位到被删结点的前一个
+        p = p->next;
+    }
+    if(node_count < n){
+        return head;
+    }else if(node_count == n){
+        head = head->next;
+    }else
+        p->next = p->next->next;
+    return head;
 }
+/** 19. 删除链表的倒数第n个结点
+ * Maintain two pointers and update one with a delay of n steps.
+ * 利用双指针，first 与 second 间隔 n step, 当second到达链表末尾时，此时frist正好处于被删除结点。
+ */
+ListNode* Solution::removeNthFromEnd_1(ListNode* head, int n){
+    ListNode* dummy = new ListNode();// 创建空头（哑结点，不必对head进行额外判断）
+    dummy->next = head;
+    ListNode* left = dummy; // 被删除结点的前一个
+    ListNode* right = head;
 
+    while(n--){ right = right->next; } // r 先走n个结点
+    // left = right;
+    while(right){
+        left = left->next;
+        right = right->next;
+    }
+    left->next = left->next->next;
+    return dummy->next;
+}   
 //19.
 void test4removeNthFromEnd(){
-
+    vector<int> data = {1,2,3,4,5};
+    ListNode* head = nullptr;
+    Solution ss;
+    head = ss.create_list(head, data);
+    ss.printList(head);
+    ListNode* res = ss.removeNthFromEnd_1(head, 3);
+    ss.printList(res);
 }
 
 

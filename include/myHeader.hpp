@@ -170,6 +170,7 @@ public:
     bool searchMatrix_2(std::vector<std::vector<int>>& matrix, int target);
     // 19. 删除链表的倒数第n个结点
     ListNode* removeNthFromEnd(ListNode* head, int n);
+    ListNode* removeNthFromEnd_1(ListNode* head, int n);
 
     //==========hard==========//
     //42.

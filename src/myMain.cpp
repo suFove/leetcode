@@ -55,8 +55,8 @@ int main()
     // test4spiralOrder();
     // test4rotateMatrix();
     // test4searchMatrix();
-    test4addTwoNumbers();
-    
+    // test4addTwoNumbers();
+    test4removeNthFromEnd();
     return 0;
 }
 
