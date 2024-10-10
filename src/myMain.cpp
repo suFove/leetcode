@@ -56,7 +56,8 @@ int main()
     // test4rotateMatrix();
     // test4searchMatrix();
     // test4addTwoNumbers();
-    test4removeNthFromEnd();
+    // test4removeNthFromEnd();
+    test4swapPairs();
     return 0;
 }
 

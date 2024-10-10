@@ -2699,10 +2699,42 @@ void test4removeNthFromEnd(){
 }
 
 
+//24. 交换链表中的两个结点，不能使用值交换，两两交换其中相邻的节点
+ListNode* Solution::swapPairs(ListNode* head){
+    if(head == nullptr || head->next == nullptr) return head;
+    ListNode* dummy = new ListNode();
+    
+    ListNode* pre = dummy;
+    ListNode* first = head;
+    ListNode* second = first->next;
+    
+    pre->next = head;
 
+    //每次交换需要看3个，pre, first, second
+    while(true){
+        first->next = second->next;
+        second->next = first;
+        pre->next = second;
+        // 移动，但是要判断
+        if(first->next == nullptr || first->next->next == nullptr)  
+            return dummy->next;
+        pre = first;
+        first = first->next; // 第一个指针指向下一对的第一个
+        second = first->next;
+    }
+    return dummy->next;
+}
 
-
-
+//24. 
+void test4swapPairs(){
+    Solution ss;
+    vector<int> data = {1,2,3,4};
+    ListNode* head = nullptr;
+    head  = ss.create_list(head, data);
+    ss.printList(head);
+    ListNode* res = ss.swapPairs(head);
+    ss.printList(res);
+}
 
 
 

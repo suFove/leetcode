@@ -171,7 +171,8 @@ public:
     // 19. 删除链表的倒数第n个结点
     ListNode* removeNthFromEnd(ListNode* head, int n);
     ListNode* removeNthFromEnd_1(ListNode* head, int n);
-
+    // 24. 交换链表中的结点（不能使用值交换）
+    ListNode* swapPairs(ListNode* head);
     //==========hard==========//
     //42.
     int trap(std::vector<int>& height);
@@ -275,6 +276,13 @@ void test4searchMatrix();
 void test4addTwoNumbers();
 //19.
 void test4removeNthFromEnd();
+//24.
+void test4swapPairs();
+
+
+
+
+
 //=============hard============//
 
 void test4trap();
